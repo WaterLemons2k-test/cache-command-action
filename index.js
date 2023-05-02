@@ -7,7 +7,7 @@ const path = '.cacheCommandOutput'
 const run = 'date'
 
 async function run() {
-    let output;
+    let output = '';
     const options = {};
     options.listeners = {
       stdout: (data: Buffer) => {
