@@ -10,11 +10,11 @@ fs.writeFile(path, path, err => {
 });
 async function getCache() {
     const cacheId = await cache.restoreCache([path], key)
-    if (cacheId) {
-        console.log("hit: true")
-        // return;
+    if (!cacheId) {
+        // Cache not restored
+        await cache.saveCache([path], key)
     }
-    await cache.saveCache([path], key)
+    console.log("hit: true")
 }
 
 getCache()
