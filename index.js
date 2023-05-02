@@ -7,9 +7,6 @@ async function run() {
   try {
     const path = core.getInput('path');
     const command = core.getInput('run', { required: true });
-  } catch (error) {
-    core.setFailed("error message");
-  }
 
   let output;
   const options = {};
@@ -38,6 +35,9 @@ async function run() {
   }
 
   core.setOutput("cache-hit", true)
+  } catch (error) {
+      core.setFailed(error.message)
+  }
 }
 
 run()
