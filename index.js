@@ -4,20 +4,19 @@ const exec = require('@actions/exec');
 const fs = require('fs')
 
 const path = '.cacheCommandOutput'
-const run = 'date'
+const command = 'date'
 let output;
   const options = {};
   options.listeners = {
-    stdout: data => {
+    stdout: (data) => {
       output = data.toString();
     }
   };
 
 async function run() {
- 
-    await exec.exec(run, options);
+    await exec.exec(command, options);
 
-    fs.writeFile(path, output, err => {
+    await fs.writeFile(path, output, err => {
         if (err) {
             console.error(err);
         }
