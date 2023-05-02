@@ -8,7 +8,7 @@ const run = 'date'
 let output;
   const options = {};
   options.listeners = {
-    stdout: (data: Buffer) => {
+    stdout: data => {
       output = data.toString();
     }
   };
