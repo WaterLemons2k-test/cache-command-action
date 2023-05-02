@@ -1,4 +1,5 @@
 const cache = require("@actions/cache")
+const core = require("@actions/core")
 const fs = require('fs')
 
 const path = '.cacheCommand'
@@ -8,13 +9,16 @@ fs.writeFile(path, path, err => {
     console.error(err);
   }
 });
-async function getCache() {
+async function run() {
     const cacheId = await cache.restoreCache([path], key)
     if (!cacheId) {
         // Cache not restored
         await cache.saveCache([path], key)
+        core.Setoutput("hit", false)
+        return;
     }
+    core.Setoutput("hit", true)
     console.log("hit: true")
 }
 
-getCache()
+run()
