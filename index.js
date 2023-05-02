@@ -23,7 +23,7 @@ async function run() {
     await fs.writeFile(path, output, err => {
       if (err) {
         core.setFailed(`Write command output to ${path} failed: ${err}`);
-        return;
+        throw error;
       }
     });
 
