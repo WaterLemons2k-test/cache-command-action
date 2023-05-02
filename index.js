@@ -14,10 +14,10 @@ async function run() {
     if (!cacheId) {
         // Cache not restored
         await cache.saveCache([path], key)
-        core.Setoutput("hit", false)
+        core.setOutput("hit", false)
         return;
     }
-    core.Setoutput("hit", true)
+    core.setOutput("hit", true)
     console.log("hit: true")
 }
 
