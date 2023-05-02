@@ -3,24 +3,22 @@ const core = require("@actions/core")
 const exec = require('@actions/exec');
 const fs = require('fs')
 
-try {
-  const path = core.getInput('path');
-  const command = core.getInput('run', { require: true });
-} catch (error) {
-  core.setFailed(error.message);
-}
-
-// if (!path === null || !command)
-
-let output;
-const options = {};
-options.listeners = {
-  stdout: (data) => {
-    output = data.toString();
-  }
-};
-
 async function run() {
+  try {
+    const path = core.getInput('path');
+    const command = core.getInput('run', { require: true });
+  } catch (error) {
+    core.setFailed("error message");
+  }
+
+  let output;
+  const options = {};
+  options.listeners = {
+    stdout: (data) => {
+      output = data.toString();
+    }
+  };
+
   await exec.exec(command, [], options);
 
   core.setOutput('output', output)
