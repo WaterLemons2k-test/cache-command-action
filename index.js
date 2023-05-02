@@ -6,7 +6,7 @@ const fs = require('fs')
 async function run() {
   try {
     const path = core.getInput('path');
-    const command = core.getInput('run', { require: true });
+    const command = core.getInput('run', { required: true });
   } catch (error) {
     core.setFailed("error message");
   }
