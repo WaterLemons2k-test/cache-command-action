@@ -14,7 +14,7 @@ let output;
   };
 
 async function run() {
-    await exec.exec(command, options);
+    await exec.exec(command, [], options);
 
     await fs.writeFile(path, output, err => {
         if (err) {
