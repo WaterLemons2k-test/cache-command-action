@@ -14,5 +14,5 @@ jobs:
       - run: npm i @actions/cache
       - uses: ./
         with:
-          path: /
+          file: /
           run: date

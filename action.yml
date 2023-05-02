@@ -2,8 +2,8 @@ name: "cache-command-action"
 description: ""
 
 inputs:
-  path:
-    description: 'A list of files, directories, and wildcard patterns to cache and restore'
+  file:
+    description: 'A file to cache and restore command output'
     required: false
     default: '.cacheCommandOutput'
   run:
@@ -11,7 +11,7 @@ inputs:
     required: true
 
 outpus:
-  cache-hit:
+  hit:
     description: 'A boolean value to indicate an exact match was found for the key'
   output:
     description: 'Output of the command'

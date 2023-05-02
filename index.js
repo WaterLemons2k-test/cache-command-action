@@ -5,7 +5,7 @@ const fs = require('fs')
 
 async function run() {
   try {
-    const path = core.getInput('path');
+    const file = core.getInput('file');
     const command = core.getInput('run', { required: true });
 
     let output;
@@ -20,23 +20,24 @@ async function run() {
 
     core.setOutput('output', output)
 
-    await fs.writeFile(path, output, err => {
+    await fs.writeFile(file, output, err => {
       try {
-        if (err) throw err;
+        if (err) throw new Error(`Write command output to ${file} failed: ${err}`);
       } catch (error) {
         core.setFailed(error.message)
+        process.exit();
       }
     });
 
-    const cacheId = await cache.restoreCache([path], output)
+    const cacheId = await cache.restoreCache([file], output)
     if (!cacheId) {
       // Cache not restored
-      await cache.saveCache([path], output)
-      core.setOutput("cache-hit", false)
+      await cache.saveCache([file], output)
+      core.setOutput("hit", false)
       return;
     }
 
-    core.setOutput("cache-hit", true)
+    core.setOutput("hit", true)
   } catch (error) {
     core.setFailed(error.message)
   }
