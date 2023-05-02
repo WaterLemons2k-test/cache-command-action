@@ -12,7 +12,7 @@ async function getCache() {
     const cacheId = await cache.restoreCache([path], key)
     if (cacheId) {
         console.log("hit: true")
-        return;
+        // return;
     }
     await cache.saveCache([path], key)
 }
