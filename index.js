@@ -5,17 +5,18 @@ const fs = require('fs')
 
 const path = '.cacheCommandOutput'
 const run = 'date'
+let output;
+  const options = {};
+  options.listeners = {
+    stdout: (data: Buffer) => {
+      output = data.toString();
+    }
+  };
 
 async function run() {
-    let output = '';
-    const options = {};
-    options.listeners = {
-      stdout: (data: Buffer) => {
-        output = data.toString();
-      }
-    };
-    await exec.exec(run, options);
  
+    await exec.exec(run, options);
+
     fs.writeFile(path, output, err => {
         if (err) {
             console.error(err);
