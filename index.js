@@ -21,7 +21,7 @@ async function run() {
     core.setOutput('output', output)
 
     await fs.writeFile(path, output, err => {
-      if (err) throw new Error(err);
+      if (err) throw new Error(`Write command output to ${path} error: ${err}`);
     });
 
     const cacheId = await cache.restoreCache([path], output)
