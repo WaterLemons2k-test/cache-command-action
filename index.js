@@ -7,7 +7,7 @@ try {
   const path = core.getInput('path');
   const command = core.getInput('run', { require: true });
 } catch (error) {
-  core.setFailed(error);
+  core.setFailed(error.message);
 }
 
 // if (!path === null || !command)
