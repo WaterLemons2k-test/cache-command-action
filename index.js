@@ -22,7 +22,7 @@ async function run() {
 
     await fs.writeFile(path, output, err => {
       try {
-        if (err) throw error;
+        if (err) throw err;
       } catch (error) {
         core.setFailed(error.message)
       }
