@@ -10,9 +10,9 @@ async function run() {
     let output;
     const options = {};
     options.listeners = {
-        stdout: (data: Buffer) => {
-            output = data.toString();
-        },
+      stdout: (data: Buffer) => {
+        output = data.toString();
+      }
     };
     await exec.exec(run, options);
  
