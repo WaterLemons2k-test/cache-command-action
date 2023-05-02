@@ -1,6 +1,21 @@
 name: "cache-command-action"
 description: ""
 
+inputs:
+  path:
+    description: 'A list of files, directories, and wildcard patterns to cache and restore'
+    required: false
+    default: '.cacheCommandOutput'
+  run:
+    description: 'A command that will get the output and use it as a key'
+    required: true
+
+outpus:
+  cache-hit:
+    description: 'A boolean value to indicate an exact match was found for the key'
+  output:
+    description: 'Output of the command'
+
 runs:
   using: "node16"
   main: "index.js"

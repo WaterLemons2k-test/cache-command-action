@@ -3,34 +3,36 @@ const core = require("@actions/core")
 const exec = require('@actions/exec');
 const fs = require('fs')
 
-const path = '.cacheCommandOutput'
-const command = 'date'
+const path = core.getInput('path')
+const command = core.getInput('run')
 let output;
-  const options = {};
-  options.listeners = {
-    stdout: (data) => {
-      output = data.toString();
-    }
-  };
+const options = {};
+options.listeners = {
+  stdout: (data) => {
+    output = data.toString();
+  }
+};
 
 async function run() {
-    await exec.exec(command, [], options);
+  await exec.exec(command, [], options);
 
-    await fs.writeFile(path, output, err => {
-        if (err) {
-            console.error(err);
-        }
-    });
+  core.setOutput('output', output)
 
-    const cacheId = await cache.restoreCache([path], output)
-    if (!cacheId) {
-        // Cache not restored
-        await cache.saveCache([path], output)
-        core.setOutput("hit", false)
-        return;
+  await fs.writeFile(path, output, err => {
+    if (err) {
+      console.error(err);
     }
-    core.setOutput("hit", true)
-    console.log("hit: true")
+  });
+
+  const cacheId = await cache.restoreCache([path], output)
+  if (!cacheId) {
+    // Cache not restored
+    await cache.saveCache([path], output)
+    core.setOutput("cache-hit", false)
+    return;
+  }
+
+  core.setOutput("cache-hit", true)
 }
 
 run()
