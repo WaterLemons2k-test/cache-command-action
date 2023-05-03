@@ -24,6 +24,11 @@ async function run() {
             listeners: {stdout: (data) => {output += data.toString().replace(/\n/g, '');}
             }
           });
+        
+          if (!output) {
+            throw new Error('Command output is empty.');
+          }
+        
           core.setOutput('output', output)
           core.endGroup();
 
@@ -47,8 +52,9 @@ async function run() {
           core.info(`Cache restored from the command output: ${output}`)
           core.setOutput("hit", true)
     } catch (error) {
-      core.setOutput('hit', false)
-      core.setFailed(`${error.message}`)
+      core.setOutput('output', '');
+      core.setOutput('hit', false);
+      core.setFailed(`${error.message}`);
     }
 }
 
