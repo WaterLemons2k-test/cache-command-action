@@ -8,7 +8,7 @@ async function run() {
         startGroup('Starting to run command')
         // Write command to Shell script
         const command = getInput('run', { required: true });
-        const script = './.cacheCommand.sh'
+        const script = './run.sh'
         await writeFile(script, command, err => {
             if (err) {
                 setFailed(`Write command to Shell script failed: ${err}`);
@@ -45,10 +45,11 @@ async function run() {
           info(`Cache restored from the command output: ${output}`)
           setOutput("hit", true)
           endGroup();
-    } catch (error) {
+    } catch (err) {
       setOutput('output', '');
       setOutput('hit', false);
-      setFailed(`${error.message}`);
+      setFailed(err.message);
+      info(err);
     }
 }
 
