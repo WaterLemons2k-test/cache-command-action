@@ -15,7 +15,10 @@ jobs:
       - uses: ./
         id: cache
         with:
-          run: sudo apt-get install ca-certificates | grep ubuntu
+          run: |
+            sudo apt-get install ca-certificates | grep ubuntu
+            echo "foo" > bar
+            cat bar
       - name: Get outputs
         if: always()
         run: |
