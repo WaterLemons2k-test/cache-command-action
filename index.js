@@ -18,7 +18,7 @@ async function run() {
         core.setOutput('output', output)
     } catch (error) {
         core.setOutput('hit', false)
-        core.setFailed(`Run command ${command} failed: ${error.message}`)
+        core.setFailed(`Run command failed: ${error.message}`)
         return;
     }
 
