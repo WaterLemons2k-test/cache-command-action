@@ -1,5 +1,5 @@
 const { restoreCache, saveCache } = require("@actions/cache")
-const { getInput, setFailed, setOutput, startGroup, endGroup, info } = require("@actions/core")
+const { getInput, setFailed, setOutput, startGroup, endGroup, info, debug } = require("@actions/core")
 const { exec } = require('@actions/exec');
 const { writeFile } = require('fs')
 
@@ -19,7 +19,10 @@ async function run() {
           let output = '';
           await exec('bash ' + script, [], {
             listeners: {
-              stdout: (data) => {output += data.toString().trim();}
+              stdout: (data) => {
+                  debug('stdout')
+                  output += data.toString().trim();
+              }
             }
           });
         
