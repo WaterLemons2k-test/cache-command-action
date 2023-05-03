@@ -9,7 +9,6 @@ async function run() {
         if (!file) throw new Error(`Input not supplied: file`);
         const command = core.getInput('run', { required: true });
 
-        try {
           let output = '';
           core.info(`Starting to run command ${command}`)
           await exec.exec(command, [], {
@@ -18,10 +17,6 @@ async function run() {
             }
           });
           core.setOutput('output', output)
-        } catch (error) {
-          core.setFailed(`Run command failed: ${error.message}`)
-          return;
-        }
 
         await fs.writeFile(file, output, err => {
             if (err) {
@@ -30,7 +25,6 @@ async function run() {
             }
         });
 
-        try {
           const cacheId = await cache.restoreCache([file], output)
           if (!cacheId) {
             // Cache not restored
@@ -41,9 +35,6 @@ async function run() {
 
           // Cache restored
           core.setOutput("hit", true)
-        } catch (error) {
-          core.setFailed(`Cache failed: ${error.message}`)
-        }
     } catch (error) {
       core.setOutput('hit', false)
       core.setFailed(`${error.message}`)
