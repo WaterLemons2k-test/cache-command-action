@@ -28,12 +28,14 @@ async function run() {
           const cacheId = await cache.restoreCache([file], output)
           if (!cacheId) {
             // Cache not restored
+            core.info(`Cache not found for input command output: ${{output}}`)
             await cache.saveCache([file], output)
             core.setOutput("hit", false)
             return;
           }
 
           // Cache restored
+          core.info(`Cache saved with input command output: ${output}`)
           core.setOutput("hit", true)
     } catch (error) {
       core.setOutput('hit', false)
