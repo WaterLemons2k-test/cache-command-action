@@ -15,7 +15,6 @@ jobs:
       - uses: ./
         id: cache
         with:
-          file: ''
           run: date
       - name: Get outputs
         if: always()

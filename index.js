@@ -8,7 +8,7 @@ async function run() {
     const file = core.getInput('file');
     const command = core.getInput('run', { required: true });
 
-    if (!file) throw new Error(`Input not supplied: file}`)
+    if (!file) throw new Error(`Input not supplied: file`);
 
     await exec.exec(command, [], {
       listeners: {
