@@ -9,7 +9,7 @@ async function run() {
     const command = core.getInput('run', { required: true });
 
     await exec.exec(command, [], {
-      listeners = {
+      listeners: {
         stdout: (data) => {const output = data.toString();}
       }
     });
@@ -35,6 +35,8 @@ async function run() {
 
     core.setOutput("hit", true)
   } catch (error) {
+    core.setOutput('output', '')
+    core.setOutput('hit', false)
     core.setFailed(error.message)
   }
 }
