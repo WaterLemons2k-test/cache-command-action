@@ -8,15 +8,11 @@ async function run() {
     const file = core.getInput('file');
     const command = core.getInput('run', { required: true });
 
-    let output;
-    const options = {};
-    options.listeners = {
-      stdout: (data) => {
-        output = data.toString();
+    await exec.exec(command, [], {
+      listeners = {
+        stdout: (data) => {const output = data.toString();}
       }
-    };
-
-    await exec.exec(command, [], options);
+    });
 
     core.setOutput('output', output)
 
