@@ -49,7 +49,7 @@ async function run() {
       setOutput('output', '');
       setOutput('hit', false);
       setFailed(err.message);
-      info(err);
+      info(err.stack);
     }
 }
 
