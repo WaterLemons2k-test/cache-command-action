@@ -5,7 +5,7 @@ const fs = require('fs')
 
 async function run() {
   try {
-    const file = core.getInput('file');
+    const file = core.getInput('file', { required: true });
     const command = core.getInput('run', { required: true });
 
     await exec.exec(command, [], {
