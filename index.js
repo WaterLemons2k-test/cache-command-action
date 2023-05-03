@@ -1,27 +1,28 @@
-const cache = require("@actions/cache")
-const core = require("@actions/core")
-const exec = require('@actions/exec');
-const fs = require('fs')
+const { restoreCache, saveCache } = require("@actions/cache")
+const { getInput, setFailed, setOutput, startGroup, endGroup, info } = require("@actions/core")
+const { exec } = require('@actions/exec');
+const { writeFile } = require('fs')
 
 async function run() {
     try {
-        const file = core.getInput('file');
+        const file = getInput('file');
         if (!file) throw new Error(`Input not supplied: file`);
-        const command = core.getInput('run', { required: true });
+        const command = getInput('run', { required: true });
 
         // Write command to Shell script
         const script = './.cacheCommand.sh'
-        await fs.writeFile(script, command, err => {
+        await writeFile(script, command, err => {
             if (err) {
-                core.setFailed(`Write command to Shell script failed: ${err}`);
+                setFailed(`Write command to Shell script failed: ${err}`);
                 process.exit();
             }
         });
 
           let output = '';
-          core.startGroup('Starting to run command')
-          await exec.exec('bash ' + script, [], {
-            listeners: {stdout: (data) => {output += data.toString().replace(/\n/g, '');}
+          startGroup('Starting to run command')
+          await exec('bash ' + script, [], {
+            listeners: {
+              stdout: (data) => {output += data.toString().replace(/\n/g, '');}
             }
           });
         
@@ -29,32 +30,32 @@ async function run() {
             throw new Error('Command output is empty.');
           }
         
-          core.setOutput('output', output)
-          core.endGroup();
+          setOutput('output', output)
+          endGroup();
 
-        await fs.writeFile(file, output, err => {
+        await writeFile(file, output, err => {
             if (err) {
-                core.setFailed(`Write command output to ${file} failed: ${err}`);
+                setFailed(`Write command output to ${file} failed: ${err}`);
                 process.exit();
             }
         });
 
-          const cacheId = await cache.restoreCache([file], output)
-          if (!cacheId) {
+          const cache = await restoreCache([file], output)
+          if (!cache) {
             // Cache not restored
-            await cache.saveCache([file], output)
-            core.info(`Cache saved with the command output: ${output}`)
-            core.setOutput("hit", false)
+            await saveCache([file], output)
+            info(`Cache saved with the command output: ${output}`)
+            setOutput("hit", false)
             return;
           }
 
           // Cache restored
-          core.info(`Cache restored from the command output: ${output}`)
-          core.setOutput("hit", true)
+          info(`Cache restored from the command output: ${output}`)
+          setOutput("hit", true)
     } catch (error) {
-      core.setOutput('output', '');
-      core.setOutput('hit', false);
-      core.setFailed(`${error.message}`);
+      setOutput('output', '');
+      setOutput('hit', false);
+      setFailed(`${error.message}`);
     }
 }
 

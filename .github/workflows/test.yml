@@ -3,6 +3,8 @@ name: Test
 on:
   push:
     branches: [main]
+      paths-ignore:
+        - '.github/workflows/cache.yml'
   pull_request:
 
 jobs:
