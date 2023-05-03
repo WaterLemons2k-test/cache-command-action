@@ -20,7 +20,7 @@ async function run() {
 
           let output = '';
           core.startGroup(`Starting to run command ${command}`)
-          await exec.exec('bash' + script, [], {
+          await exec.exec('bash ' + script, [], {
             listeners: {
               stdout: (data) => {
                 output += data.toString()//.replace(/\n/g, ' ');
