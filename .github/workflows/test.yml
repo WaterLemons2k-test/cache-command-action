@@ -15,10 +15,7 @@ jobs:
       - uses: ./
         id: cache
         with:
-          run: |
-            sudo apt-get install ca-certificates | grep ubuntu | awk -F '[(u]' '{print $2}'
-            echo "foo" > bar
-            cat bar
+          run: echo
       - name: Get outputs
         if: always()
         run: |
