@@ -15,7 +15,7 @@ jobs:
       - uses: ./
         id: cache
         with:
-          run: node -v
+          run: sudo apt-get install ca-certificates | grep ubuntu
       - name: Get outputs
         if: always()
         run: |
