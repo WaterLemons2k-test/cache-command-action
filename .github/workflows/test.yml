@@ -17,7 +17,6 @@ jobs:
         with:
           run: |
             date
-            echo "Line 2"
       - name: Get outputs
         if: always()
         run: |
