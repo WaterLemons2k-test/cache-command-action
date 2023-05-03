@@ -6,8 +6,8 @@ const fs = require('fs')
 async function run() {
     try {
         const file = core.getInput('file');
-        if (!file) throw new Error(`Input not supplied: file`);
         const command = core.getInput('run', { required: true });
+        if (!file) throw new Error(`Input not supplied: file`);
 
         let output = '';
         await exec.exec(command, [], {
