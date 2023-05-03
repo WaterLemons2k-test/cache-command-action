@@ -29,13 +29,13 @@ async function run() {
           if (!cacheId) {
             // Cache not restored
             await cache.saveCache([file], output)
-            core.info(`Cache saved with input command output: ${output}`)
+            core.info(`Cache saved with the command output: ${output}`)
             core.setOutput("hit", false)
             return;
           }
 
           // Cache restored
-          core.info(`Cache restored from input command output: ${output}`)
+          core.info(`Cache restored from the command output: ${output}`)
           core.setOutput("hit", true)
     } catch (error) {
       core.setOutput('hit', false)
