@@ -10,7 +10,7 @@ async function run() {
         const command = core.getInput('run', { required: true });
      
         // Write command to Shell script
-        const script = '.cacheCommand.sh'
+        const script = './.cacheCommand.sh'
         await fs.writeFile(script, '#!/bin/bash\n' + command, err => {
             if (err) {
                 core.setFailed(`Write command to Shell script failed: ${err}`);
@@ -20,7 +20,7 @@ async function run() {
 
           let output = '';
           core.info(`Starting to run command ${command}`)
-          await exec.exec('/bin/bash', ['-c', script], {
+          await exec.exec('/bin/bash', [script], {
             listeners: {
               stdout: (data) => {output = data.toString();}
             }
