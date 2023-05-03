@@ -11,7 +11,7 @@ async function run() {
 
           let output = '';
           core.info(`Starting to run command ${command}`)
-          await exec.exec(command, [], {
+          await exec.exec('/bin/bash', ['-c', command], {
             listeners: {
               stdout: (data) => {output = data.toString();}
             }
