@@ -2,12 +2,8 @@ name: "cache-command-action"
 description: ""
 
 inputs:
-  file:
-    description: 'A file to cache and restore command output'
-    required: false
-    default: '.cacheCommandOutput'
   run:
-    description: 'A command that will get the output and use it as a key'
+    description: 'A command that will run to get the output and use it as a key'
     required: true
 
 outputs:

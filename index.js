@@ -5,11 +5,9 @@ const { writeFile } = require('fs')
 
 async function run() {
     try {
-        const file = getInput('file');
-        if (!file) throw new Error(`Input not supplied: file`);
-        const command = getInput('run', { required: true });
-
+        startGroup('Starting to run command')
         // Write command to Shell script
+        const command = getInput('run', { required: true });
         const script = './.cacheCommand.sh'
         await writeFile(script, command, err => {
             if (err) {
@@ -19,7 +17,6 @@ async function run() {
         });
 
           let output = '';
-          startGroup('Starting to run command')
           await exec('bash ' + script, [], {
             listeners: {
               stdout: (data) => {output += data.toString().replace(/\n/g, '');}
@@ -33,17 +30,12 @@ async function run() {
           setOutput('output', output)
           endGroup();
 
-        await writeFile(file, output, err => {
-            if (err) {
-                setFailed(`Write command output to ${file} failed: ${err}`);
-                process.exit();
-            }
-        });
 
-          const cache = await restoreCache([file], output)
+          startGroup('Starting to cache')
+          const cache = await restoreCache([script], output)
           if (!cache) {
             // Cache not restored
-            await saveCache([file], output)
+            await saveCache([script], output)
             info(`Cache saved with the command output: ${output}`)
             setOutput("hit", false)
             return;
@@ -52,6 +44,7 @@ async function run() {
           // Cache restored
           info(`Cache restored from the command output: ${output}`)
           setOutput("hit", true)
+          endGroup();
     } catch (error) {
       setOutput('output', '');
       setOutput('hit', false);
