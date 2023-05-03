@@ -7,7 +7,7 @@ async function run() {
     try {
         const file = core.getInput('file');
         if (!file) throw new Error(`Input not supplied: file`);
-        const command = core.getInput('run', { required: true });
+        const command = core.getMultilineInput('run', { required: true });
 
           let output = '';
           core.info(`Starting to run command ${command}`)
@@ -16,8 +16,7 @@ async function run() {
               core.setFailed(`Run command failed: ${err}`);
               return;
             }
-            // Convert multiple lines to one line
-            output = stdout.replace(/\n/g, ' ');
+            output = stdout;
           });
           console.log('output: ', output)
           core.setOutput('output', output)
