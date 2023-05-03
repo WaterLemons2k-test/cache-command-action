@@ -17,8 +17,9 @@ async function run() {
               return;
             }
             // Convert multiple lines to one line
-            output = stdout.replace(/\n/g, ' ');;
+            output = stdout.replace(/\n/g, ' ');
           });
+          console.log('output: ', output)
           core.setOutput('output', output)
 
         await fs.writeFile(file, output, err => {
