@@ -14,7 +14,7 @@ async function run() {
           await exec.exec(command, [], {
             listeners: {
               stdout: (data) => {
-                output += data.toString().replace(/\n/g, ' ');
+                output += data.toString()//.replace(/\n/g, ' ');
                 console.log("output: ", output);
               }
             }
