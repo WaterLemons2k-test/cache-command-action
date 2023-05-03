@@ -15,7 +15,7 @@ jobs:
       - uses: ./
         id: cache
         with:
-          run: date1
+          run: date
       - name: Get outputs
         if: always()
         run: |
