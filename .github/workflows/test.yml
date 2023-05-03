@@ -18,6 +18,7 @@ jobs:
           file: ''
           run: ''
       - name: Get outputs
+        if: always()
         run: |
           echo "output: ${{ steps.cache.outputs.output }}"
           echo "hit: ${{ steps.cache.outputs.hit }}"
