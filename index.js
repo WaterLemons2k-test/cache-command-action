@@ -1,6 +1,6 @@
 const cache = require("@actions/cache")
 const core = require("@actions/core")
-const exec = require('@actions/exec');
+const { exec } = require('child_process');
 const fs = require('fs')
 
 async function run() {
@@ -11,10 +11,12 @@ async function run() {
 
           let output = '';
           core.info(`Starting to run command ${command}`)
-          await exec.exec(command, [], {
-            listeners: {
-              stdout: (data) => {output = data.toString();}
+          await exec(command, (error, stdout) => {
+            if (error) {
+              core.setFailed(`Run command failed: ${err}`);
+              return;
             }
+            output = stdout;
           });
           core.setOutput('output', output)
 
