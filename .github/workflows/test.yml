@@ -16,7 +16,7 @@ jobs:
         id: cache
         with:
           run: |
-            sudo apt-get install ca-certificates | grep ubuntu
+            sudo apt-get install ca-certificates | grep ubuntu | awk -F '[(u]' '{print $2}'
             echo "foo" > bar
             cat bar
       - name: Get outputs
