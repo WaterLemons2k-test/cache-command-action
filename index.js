@@ -16,7 +16,8 @@ async function run() {
               core.setFailed(`Run command failed: ${err}`);
               return;
             }
-            output = stdout;
+            // Convert multiple lines to one line
+            output = stdout.replace(/\n/g, ' ');;
           });
           core.setOutput('output', output)
 
