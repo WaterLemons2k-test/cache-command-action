@@ -1,6 +1,6 @@
 const cache = require("@actions/cache")
 const core = require("@actions/core")
-const exec = require('@actions/exec');
+const { spawn } = require('child_process');
 const fs = require('fs')
 
 async function run() {
@@ -20,12 +20,10 @@ async function run() {
 
           let output = '';
           core.info(`Starting to run command ${command}`)
-          await exec.exec('/bin/bash', [script], {
-            listeners: {
-              stdout: (data) => {output = data.toString();}
-            }
+          await spawn('bash', [script]).stdout.on('data', (data) => {
+            output = data.toString();
+            core.setOutput('output', output)
           });
-          core.setOutput('output', output)
 
         await fs.writeFile(file, output, err => {
             if (err) {
