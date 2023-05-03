@@ -9,7 +9,7 @@ async function run() {
     const command = core.getInput('run', { required: true });
     if (!file) throw new Error(`Input not supplied: file`);
 
-    let output;
+    let output = '';
     await exec.exec(command, [], {
       listeners: {
         stdout: (data) => {output = data.toString();}
@@ -37,7 +37,6 @@ async function run() {
 
     core.setOutput("hit", true)
   } catch (error) {
-    core.setOutput('output', '')
     core.setOutput('hit', false)
     core.setFailed(error.message)
   }
