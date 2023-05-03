@@ -19,7 +19,7 @@ async function run() {
           let output = '';
           await exec('bash ' + script, [], {
             listeners: {
-              stdout: (data) => {output += data.toString().replace(/\n/g, '');}
+              stdout: (data) => {output += data.toString().trim();}
             }
           });
         
