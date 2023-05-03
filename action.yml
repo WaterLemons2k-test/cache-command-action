@@ -10,7 +10,7 @@ inputs:
     description: 'A command that will get the output and use it as a key'
     required: true
 
-outpus:
+outputs:
   hit:
     description: 'A boolean value to indicate an exact match was found for the key'
   output:
