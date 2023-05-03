@@ -21,6 +21,7 @@ async function run() {
           let output = '';
           core.info(`Starting to run command ${command}`)
           await spawn('bash', [script]).stdout.on('data', (data) => {
+            console.log(data.toString());
             output = data.toString();
             core.setOutput('output', output)
           });
