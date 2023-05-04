@@ -1,16 +1,30 @@
+'use strict';
+
 const { restoreCache, saveCache } = require('@actions/cache');
 const { getInput, setFailed, setOutput, startGroup, endGroup, info, debug } = require('@actions/core');
 const { exec } = require('@actions/exec');
 const { writeFile } = require('fs');
 
-async function run () {
+// handleErr logs error when catching err and sets a failing exit code.
+function handleErr(err) {
+  if (!err) return;
+
+  setFailed(err.message);
+  info(err.stack);
+}
+
+async function run() {
   try {
     startGroup('Starting to run command');
     // Write command to Shell script
     const script = '.';
     const command = getInput('run', { required: true });
     await writeFile(script, command, err => {
-      if (err) throw new Error(`Write command to Shell script failed: ${err}`);
+      try {
+        if (err) throw new Error(`Write command to Shell script failed: ${err}`);
+      } catch (err) {
+        handleErr(err);
+      }
     });
 
     let output = '';
@@ -23,9 +37,7 @@ async function run () {
       }
     });
 
-    if (!output) {
-      throw new Error('Command output is empty.');
-    }
+    if (!output) throw new Error('Command output is empty.');
 
     setOutput('output', output);
     endGroup();
@@ -45,10 +57,7 @@ async function run () {
     setOutput('hit', true);
     endGroup();
   } catch (err) {
-    setOutput('output', '');
-    setOutput('hit', false);
-    setFailed(err.message);
-    info(err.stack);
+    handleErr(err);
   }
 }
 
