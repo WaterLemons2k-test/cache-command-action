@@ -12,7 +12,7 @@
     "@actions/cache": "^3.2.1"
   },
   "scripts": {
-    "build": "tsc && ncc build",
+    "build": "tsc && ncc build -m",
     "lint": "eslint src/**/*.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

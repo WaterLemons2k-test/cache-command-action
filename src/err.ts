@@ -1,4 +1,4 @@
-import { setOutput, setFailed, debug } from '@actions/core';
+import { debug, setFailed, setOutput } from '@actions/core';
 
 // handleErr sets all outputs when catching err, logs error and sets a failing exit code.
 export function handleErr(err: unknown) {

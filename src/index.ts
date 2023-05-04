@@ -1,7 +1,8 @@
-import { handleErr } from './err';
-import { commandToScript, getScriptOutput } from './exec';
 import { restoreOrSaveCache } from './cache';
-import { getInput, setOutput, startGroup, endGroup } from '@actions/core';
+import { handleErr } from './err';
+import { getScriptOutput } from './exec';
+import { commandToScript } from './fs';
+import { endGroup, getInput, setOutput, startGroup } from '@actions/core';
 
 async function run() {
   startGroup('Starting to run command');

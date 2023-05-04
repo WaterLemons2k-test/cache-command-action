@@ -1,5 +1,5 @@
 import { restoreCache, saveCache } from '@actions/cache';
-import { setOutput, info, debug } from '@actions/core';
+import { debug, info, setOutput } from '@actions/core';
 
 // restoreOrSaveCache restore the cache if the cache hits,
 // otherwize save the cache.
