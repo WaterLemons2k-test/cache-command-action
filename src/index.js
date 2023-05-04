@@ -16,20 +16,31 @@ function handleErr(err) {
   throw err;
 }
 
+// Write command to script.
+async function commandToScript(command, script) {
+  if (!command || !script) return;
+
+  debug(`Starting to write command to script:
+  command: ${command}, script: ${script}`);
+
+  await writeFile(script, command, err => {
+    try {
+      if (err) throw new Error(`Write command to script failed: ${err}`);
+    } catch (err) {
+      handleErr(err);
+    }
+  });
+}
+
 async function run() {
   try {
     startGroup('Starting to run command');
-    // Write command to Shell script
+
     const script = './run.sh';
     const command = getInput('run', { required: true });
-    debug(`script: ${script}, command: ${command}`);
-    await writeFile(script, command, err => {
-      try {
-        if (err) throw new Error(`Write command to Shell script failed: ${err}`);
-      } catch (err) {
-        handleErr(err);
-      }
-    });
+
+    // Write command to Shell script
+    commandToScript(command, script);
 
     // Execute Shell script
     const shell = 'bash';
@@ -43,7 +54,6 @@ async function run() {
     setOutput('output', output);
     endGroup();
 
-    startGroup('Starting to cache');
     const cache = await restoreCache([script], output);
     if (!cache) {
       // Cache not restored
@@ -58,7 +68,6 @@ async function run() {
     debug('Cache restored');
     info(`Cache restored from the command output: ${output}`);
     setOutput('hit', true);
-    endGroup();
   } catch (err) {
     handleErr(err);
   }
