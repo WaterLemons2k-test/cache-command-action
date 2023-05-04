@@ -10,7 +10,7 @@ function handleErr(err) {
   if (!err) return;
 
   debug('Starting to handle error');
-  setOutput('stdout', '');
+  setOutput('output', '');
   setOutput('hit', false);
   setFailed(err.message);
   throw err;
@@ -34,27 +34,28 @@ async function run() {
     // Execute Shell script
     const shell = 'bash';
     debug(`shell: ${shell}`);
-    const { stdout } = await getExecOutput(shell + ' ' + script);
+    const output = await getExecOutput(shell + ' ' + script).stdout.trim();
+    debug(`output: ${output}`);
 
-    if (!stdout) throw new Error('Command stdout is empty.');
+    if (!output) throw new Error('Command output is empty.');
 
-    setOutput('stdout', stdout);
+    setOutput('output', output);
     endGroup();
 
     startGroup('Starting to cache');
-    const cache = await restoreCache([script], stdout);
+    const cache = await restoreCache([script], output);
     if (!cache) {
       // Cache not restored
       debug('Cache not restored, save cache');
-      await saveCache([script], stdout);
-      info(`Cache saved with the command stdout: ${stdout}`);
+      await saveCache([script], output);
+      info(`Cache saved with the command output: ${output}`);
       setOutput('hit', false);
       return;
     }
 
     // Cache restored
     debug('Cache restored');
-    info(`Cache restored from the command stdout: ${stdout}`);
+    info(`Cache restored from the command output: ${output}`);
     setOutput('hit', true);
     endGroup();
   } catch (err) {
