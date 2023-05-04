@@ -32,25 +32,31 @@ async function commandToScript(command, script) {
   });
 }
 
+// Get script output and trim.
+async function getScriptOutput(shell, script) {
+  if (!shell || !script) return '';
+
+  debug(`Starting to get script output:
+  shell: ${shell}, script: ${script}`);
+
+  const { stdout } = await getExecOutput(shell + ' ' + script);
+  const output = stdout.trim();
+  if (!output) throw new Error('Command output is empty.');
+  debug(`output: ${output}`);
+  return output;
+}
+
 async function run() {
   try {
     startGroup('Starting to run command');
-
-    const script = './run.sh';
     const command = getInput('run', { required: true });
+    const script = './run.sh';
 
     // Write command to Shell script
     commandToScript(command, script);
 
     // Execute Shell script
-    const shell = 'bash';
-    debug(`shell: ${shell}`);
-    const { stdout } = await getExecOutput(shell + ' ' + script);
-    const output = stdout.trim();
-    debug(`output: ${output}`);
-
-    if (!output) throw new Error('Command output is empty.');
-
+    const output = getScriptOutput('bash', script);
     setOutput('output', output);
     endGroup();
 
