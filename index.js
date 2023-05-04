@@ -9,6 +9,7 @@ const { writeFile } = require('fs');
 function handleErr(err) {
   if (!err) return;
 
+  debug('Starting to handle error')
   setOutput('stdout', '');
   setOutput('hit', false);
   setFailed(err.message);
@@ -21,6 +22,7 @@ async function run() {
     // Write command to Shell script
     const script = './run.sh';
     const command = getInput('run', { required: true });
+    debug(`script: ${script}, command: ${command}`)
     await writeFile(script, command, err => {
       try {
         if (err) throw new Error(`Write command to Shell script failed: ${err}`);
@@ -31,6 +33,7 @@ async function run() {
 
     // Execute Shell script
     const shell = 'bash';
+    debug(`shell: ${shell}`)
     const { stdout } = await getExecOutput(shell + ' ' + script);
 
     if (!stdout) throw new Error('Command stdout is empty.');
@@ -42,6 +45,7 @@ async function run() {
     const cache = await restoreCache([script], stdout);
     if (!cache) {
       // Cache not restored
+      debug('Cache not restored, save cache')
       await saveCache([script], stdout);
       info(`Cache saved with the command stdout: ${stdout}`);
       setOutput('hit', false);
@@ -49,6 +53,7 @@ async function run() {
     }
 
     // Cache restored
+    debug('Cache restored')
     info(`Cache restored from the command stdout: ${stdout}`);
     setOutput('hit', true);
     endGroup();
