@@ -30,7 +30,8 @@ async function run() {
     });
 
     let output = '';
-    await exec('bash -c ' + command, [], {
+    const shell = 'bash'
+    await exec(shell + ' ' + script, [], {
       listeners: {
         stdout: (data) => {
           debug('stdout');
