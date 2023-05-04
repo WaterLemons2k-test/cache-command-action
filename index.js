@@ -5,12 +5,15 @@ const { getInput, setFailed, setOutput, startGroup, endGroup, info, debug } = re
 const { exec } = require('@actions/exec');
 const { writeFile } = require('fs');
 
-// handleErr logs error when catching err and sets a failing exit code.
+// handleErr sets all outputs when catching err, logs error and sets a failing exit code.
 function handleErr(err) {
   if (!err) return;
 
+  setOutput('output', '');
+  setOutput('hit', false);
   setFailed(err.message);
   info(err.stack);
+  throw err;
 }
 
 async function run() {
