@@ -34,8 +34,9 @@ async function run() {
     // Execute Shell script
     const shell = 'bash';
     debug(`shell: ${shell}`);
-    const output = await getExecOutput(shell + ' ' + script).stdout.trim();
-    debug(`output: ${output}`);
+    const { stdout } = await getExecOutput(shell + ' ' + script);
+    const output = stdout.trim();
+    debug(`output: ${output}`)
 
     if (!output) throw new Error('Command output is empty.');
 
