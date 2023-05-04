@@ -14,14 +14,17 @@ export async function restoreOrSaveCache(paths: string[], key: string) {
   if (!cacheKey) {
     // Cache not restored
     debug('Cache not found, save');
-    await saveCache(paths, key);
+    const cacheId = await saveCache(paths, key);
+    debug(`cacheId: ${cacheId}`)
     info(`Cache saved with key: ${key}`);
     setOutput('hit', false);
-    return;
+    return cacheId;
   }
 
   // Cache restored
   debug('Cache restored');
+  debug(`cacheKey: ${cacheKey}`)
   info(`Cache restored from key: ${key}`);
   setOutput('hit', true);
+  return cacheKey;
 }

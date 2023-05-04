@@ -1,4 +1,3 @@
-
 import { debug } from '@actions/core';
 import { getExecOutput } from '@actions/exec';
 
