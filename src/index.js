@@ -16,14 +16,14 @@ function handleErr(err) {
   throw err;
 }
 
-// Write command to script.
-async function commandToScript(command, script) {
-  if (!command || !script) return;
+// commandToScript write command to script.
+function commandToScript(command, script) {
+  if (!command || !script) throw new Error('commandToScript: command or script not supplied.');
 
   debug(`Starting to write command to script:
 command: ${command}, script: ${script}`);
 
-  await writeFile(script, command, err => {
+  writeFile(script, command, err => {
     try {
       if (err) throw new Error(`Write command to script failed: ${err}`);
     } catch (err) {
@@ -32,9 +32,9 @@ command: ${command}, script: ${script}`);
   });
 }
 
-// Get script output and trim.
+// getScriptOutput get the script output and trim.
 async function getScriptOutput(shell, script) {
-  if (!shell || !script) return '';
+  if (!shell || !script) throw new Error('getScriptOutput: shell or script not supplied.');
 
   debug(`Starting to get script output:
 shell: ${shell}, script: ${script}`);
@@ -47,38 +47,34 @@ shell: ${shell}, script: ${script}`);
 }
 
 async function run() {
-  try {
-    startGroup('Starting to run command');
+  startGroup('Starting to run command');
 
-    const command = getInput('run', { required: true });
-    // Script path to which JS writes the command
-    const script = './run.sh';
+  const command = getInput('run', { required: true });
+  // Script path in which JS will write the command
+  const script = './run.sh';
 
-    // Write command to Shell script
-    await commandToScript(command, script);
+  // Write command to script
+  commandToScript(command, script);
 
-    // Execute Shell script
-    const output = await getScriptOutput('bash', script);
-    setOutput('output', output);
-    endGroup();
+  // Get the output of script
+  const output = await getScriptOutput('bash', script);
+  setOutput('output', output);
+  endGroup();
 
-    const cache = await restoreCache([script], output);
-    if (!cache) {
-      // Cache not restored
-      debug('Cache not restored, save cache');
-      await saveCache([script], output);
-      info(`Cache saved with the command output: ${output}`);
-      setOutput('hit', false);
-      return;
-    }
-
-    // Cache restored
-    debug('Cache restored');
-    info(`Cache restored from the command output: ${output}`);
-    setOutput('hit', true);
-  } catch (err) {
-    handleErr(err);
+  const cache = await restoreCache([script], output);
+  if (!cache) {
+    // Cache not restored
+    debug('Cache not restored, save cache');
+    await saveCache([script], output);
+    info(`Cache saved with the command output: ${output}`);
+    setOutput('hit', false);
+    return;
   }
+
+  // Cache restored
+  debug('Cache restored');
+  info(`Cache restored from the command output: ${output}`);
+  setOutput('hit', true);
 }
 
-run();
+run().catch(err => handleErr(err));
