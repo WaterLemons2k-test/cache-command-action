@@ -11,5 +11,8 @@
   "license": "ISC",
   "dependencies": {
     "@actions/cache": "^3.2.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.39.0"
   }
 }

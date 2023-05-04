@@ -13,9 +13,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - run: |
-          npm ci
-          npm init -y @eslint/config
+      - run: npm ci
       - name: ESLint
         run: npx eslint index.js
       - uses: ./

@@ -1,59 +1,58 @@
-const { restoreCache, saveCache } = require("@actions/cache")
-const { getInput, setFailed, setOutput, startGroup, endGroup, info, debug } = require("@actions/core")
+const { restoreCache, saveCache } = require('@actions/cache');
+const { getInput, setFailed, setOutput, startGroup, endGroup, info, debug } = require('@actions/core');
 const { exec } = require('@actions/exec');
-const { writeFile } = require('fs')
+const { writeFile } = require('fs');
 
 async function run() {
-    try {
-        startGroup('Starting to run command')
-        // Write command to Shell script
-        const command = getInput('run', { required: true });
-        const script = './run.sh'
-        await writeFile(script, command, err => {
-            if (err) {
-                setFailed(`Write command to Shell script failed: ${err}`);
-                process.exit();
-            }
-        });
+	try {
+		startGroup('Starting to run command');
+		// Write command to Shell script
+		const command = getInput('run', { required: true });
+		const script = './run.sh';
+		await writeFile(script, command, err => {
+			if (err) {
+				setFailed(`Write command to Shell script failed: ${err}`);
+			}
+		});
 
-          let output = '';
-          await exec('bash ' + script, [], {
-            listeners: {
-              stdout: (data) => {
-                  debug('stdout')
-                  output += data.toString().trim();
-              }
-            }
-          });
+		let output = '';
+		await exec('bash ' + script, [], {
+			listeners: {
+				stdout: (data) => {
+					debug('stdout');
+					output += data.toString().trim();
+				}
+			}
+		});
         
-          if (!output) {
-            throw new Error('Command output is empty.');
-          }
+		if (!output) {
+			throw new Error('Command output is empty.');
+		}
         
-          setOutput('output', output)
-          endGroup();
+		setOutput('output', output);
+		endGroup();
 
 
-          startGroup('Starting to cache')
-          const cache = await restoreCache([script], output)
-          if (!cache) {
-            // Cache not restored
-            await saveCache([script], output)
-            info(`Cache saved with the command output: ${output}`)
-            setOutput("hit", false)
-            return;
-          }
+		startGroup('Starting to cache');
+		const cache = await restoreCache([script], output);
+		if (!cache) {
+			// Cache not restored
+			await saveCache([script], output);
+			info(`Cache saved with the command output: ${output}`);
+			setOutput('hit', false);
+			return;
+		}
 
-          // Cache restored
-          info(`Cache restored from the command output: ${output}`)
-          setOutput("hit", true)
-          endGroup();
-    } catch (err) {
-      setOutput('output', '');
-      setOutput('hit', false);
-      setFailed(err.message);
-      info(err.stack);
-    }
+		// Cache restored
+		info(`Cache restored from the command output: ${output}`);
+		setOutput('hit', true);
+		endGroup();
+	} catch (err) {
+		setOutput('output', '');
+		setOutput('hit', false);
+		setFailed(err.message);
+		info(err.stack);
+	}
 }
 
-run()
+run();
