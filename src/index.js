@@ -21,7 +21,7 @@ async function commandToScript(command, script) {
   if (!command || !script) return;
 
   debug(`Starting to write command to script:
-  command: ${command}, script: ${script}`);
+command: ${command}, script: ${script}`);
 
   await writeFile(script, command, err => {
     try {
@@ -37,7 +37,7 @@ async function getScriptOutput(shell, script) {
   if (!shell || !script) return '';
 
   debug(`Starting to get script output:
-  shell: ${shell}, script: ${script}`);
+shell: ${shell}, script: ${script}`);
 
   const { stdout } = await getExecOutput(shell + ' ' + script);
   const output = stdout.trim();
@@ -49,14 +49,16 @@ async function getScriptOutput(shell, script) {
 async function run() {
   try {
     startGroup('Starting to run command');
+
     const command = getInput('run', { required: true });
+    // Script path to which JS writes the command
     const script = './run.sh';
 
     // Write command to Shell script
-    commandToScript(command, script);
+    await commandToScript(command, script);
 
     // Execute Shell script
-    const output = getScriptOutput('bash', script);
+    const output = await getScriptOutput('bash', script);
     setOutput('output', output);
     endGroup();
 

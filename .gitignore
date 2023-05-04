@@ -1,1 +1,4 @@
 node_modules
+
+# Script path to which JS writes the command
+run.sh
