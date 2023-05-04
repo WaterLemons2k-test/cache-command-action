@@ -1,9 +1,9 @@
 'use strict';
 
-const { restoreCache, saveCache } = require('@actions/cache');
 const { getInput, setFailed, setOutput, startGroup, endGroup, info, debug } = require('@actions/core');
-const { getExecOutput } = require('@actions/exec');
 const { writeFile } = require('fs');
+const { getExecOutput } = require('@actions/exec');
+const { restoreCache, saveCache } = require('@actions/cache');
 
 // handleErr sets all outputs when catching err, logs error and sets a failing exit code.
 function handleErr(err) {
@@ -18,7 +18,7 @@ function handleErr(err) {
 
 // commandToScript write command to script.
 function commandToScript(command, script) {
-  if (!command || !script) throw new Error('commandToScript: command or script not supplied.');
+  if (!command || !script) throw new Error('commandToScript: No supplied command or script.');
 
   debug(`Starting to write command to script:
 command: ${command}, script: ${script}`);
@@ -34,7 +34,7 @@ command: ${command}, script: ${script}`);
 
 // getScriptOutput get the script output and trim.
 async function getScriptOutput(shell, script) {
-  if (!shell || !script) throw new Error('getScriptOutput: shell or script not supplied.');
+  if (!shell || !script) throw new Error('getScriptOutput: No supplied shell or script.');
 
   debug(`Starting to get script output:
 shell: ${shell}, script: ${script}`);
@@ -44,6 +44,30 @@ shell: ${shell}, script: ${script}`);
   if (!output) throw new Error('Command output is empty.');
   debug(`output: ${output}`);
   return output;
+}
+
+// restoreOrSaveCache restore the cache if the cache hits,
+// otherwize save the cache.
+async function restoreOrSaveCache(paths, key) {
+  if (!paths || !key) throw new Error('restoreOrSaveCache: No supplied paths or key.');
+
+  debug(`Starting to restore cache:
+paths: ${paths}, key: ${key}`);
+
+  const cacheKey = await restoreCache([paths], key);
+  if (!cacheKey) {
+    // Cache not restored
+    debug('Cache not found, save');
+    await saveCache([paths], key);
+    info(`Cache saved with key: ${key}`);
+    setOutput('hit', false);
+    return;
+  }
+
+  // Cache restored
+  debug('Cache restored');
+  info(`Cache restored from key: ${key}`);
+  setOutput('hit', true);
 }
 
 async function run() {
@@ -61,20 +85,8 @@ async function run() {
   setOutput('output', output);
   endGroup();
 
-  const cache = await restoreCache([script], output);
-  if (!cache) {
-    // Cache not restored
-    debug('Cache not restored, save cache');
-    await saveCache([script], output);
-    info(`Cache saved with the command output: ${output}`);
-    setOutput('hit', false);
-    return;
-  }
-
-  // Cache restored
-  debug('Cache restored');
-  info(`Cache restored from the command output: ${output}`);
-  setOutput('hit', true);
+  // Write command output to cache
+  await restoreOrSaveCache(script, output);
 }
 
 run().catch(err => handleErr(err));
