@@ -12,7 +12,6 @@ function handleErr(err) {
   setOutput('output', '');
   setOutput('hit', false);
   setFailed(err.message);
-  info(err.stack);
   throw err;
 }
 
