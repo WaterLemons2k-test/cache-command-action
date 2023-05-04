@@ -2,14 +2,14 @@
 
 const { restoreCache, saveCache } = require('@actions/cache');
 const { getInput, setFailed, setOutput, startGroup, endGroup, info, debug } = require('@actions/core');
-const { exec } = require('@actions/exec');
+const { getExecOutput } = require('@actions/exec');
 const { writeFile } = require('fs');
 
 // handleErr sets all outputs when catching err, logs error and sets a failing exit code.
 function handleErr(err) {
   if (!err) return;
 
-  setOutput('output', '');
+  setOutput('stdout', '');
   setOutput('hit', false);
   setFailed(err.message);
   throw err;
@@ -29,34 +29,27 @@ async function run() {
       }
     });
 
-    let output = '';
+    // Execute Shell script
     const shell = 'bash';
-    await exec(shell + ' ' + script, [], {
-      listeners: {
-        stdout: (data) => {
-          debug('stdout');
-          output += data.toString().trim();
-        }
-      }
-    });
+    const { stdout } = await getExecOutput(shell + ' ' + script);
 
-    if (!output) throw new Error('Command output is empty.');
+    if (!stdout) throw new Error('Command stdout is empty.');
 
-    setOutput('output', output);
+    setOutput('stdout', stdout);
     endGroup();
 
     startGroup('Starting to cache');
-    const cache = await restoreCache([script], output);
+    const cache = await restoreCache([script], stdout);
     if (!cache) {
       // Cache not restored
-      await saveCache([script], output);
-      info(`Cache saved with the command output: ${output}`);
+      await saveCache([script], stdout);
+      info(`Cache saved with the command stdout: ${stdout}`);
       setOutput('hit', false);
       return;
     }
 
     // Cache restored
-    info(`Cache restored from the command output: ${output}`);
+    info(`Cache restored from the command stdout: ${stdout}`);
     setOutput('hit', true);
     endGroup();
   } catch (err) {

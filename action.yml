@@ -9,8 +9,8 @@ inputs:
 outputs:
   hit:
     description: 'A boolean value to indicate an exact match was found for the key'
-  output:
-    description: 'Output of the command'
+  stdout:
+    description: 'Standard output of the command'
 
 runs:
   using: "node16"
