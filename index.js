@@ -19,7 +19,7 @@ async function run() {
   try {
     startGroup('Starting to run command');
     // Write command to Shell script
-    const script = '.';
+    const script = './run.sh';
     const command = getInput('run', { required: true });
     await writeFile(script, command, err => {
       try {
@@ -30,7 +30,7 @@ async function run() {
     });
 
     let output = '';
-    await exec('bash ' + script, [], {
+    await exec('bash -c' + command, [], {
       listeners: {
         stdout: (data) => {
           debug('stdout');
