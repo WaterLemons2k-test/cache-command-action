@@ -7,12 +7,10 @@ async function run() {
 	try {
 		startGroup('Starting to run command');
 		// Write command to Shell script
+    const script = '.';
 		const command = getInput('run', { required: true });
-		const script = './run.sh';
 		await writeFile(script, command, err => {
-			if (err) {
-				setFailed(`Write command to Shell script failed: ${err}`);
-			}
+			if (err) throw new Error(`Write command to Shell script failed: ${err}`);
 		});
 
 		let output = '';
