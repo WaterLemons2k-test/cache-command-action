@@ -2,22 +2,26 @@ module.exports = {
   extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended'],
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint'],
-  "rules": {
+  'rules': {
+    'indent': [
+      'error',
+      2
+    ],
     'linebreak-style': [
       'error',
       'unix'
     ],
     'quotes': [
-			'error',
-			'single'
-		],
+      'error',
+      'single'
+    ],
     'semi': [
-			'error',
-			'always'
-		]
+      'error',
+      'always'
+    ]
   },
-  "env": {
-    "node": true,
-    "es6": true
+  'env': {
+    'node': true,
+    'es6': true
   }
 };

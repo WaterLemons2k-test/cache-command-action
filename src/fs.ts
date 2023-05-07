@@ -17,4 +17,4 @@ export function writeFileWithCallback(path: string, data: string) {
       setErr(err);
     }
   });
-  }
+}
