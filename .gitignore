@@ -1,5 +1,6 @@
-node_modules
+coverage
 lib
+node_modules
 
-# Script path to which JS writes the command
+# Default script path to which JS writes the command
 run.sh

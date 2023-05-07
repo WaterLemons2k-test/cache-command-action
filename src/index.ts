@@ -1,10 +1,10 @@
-import { restoreOrSaveCache } from './cache';
-import { handleErr } from './err';
+import { isCacheHit } from './cache';
+import { setErr } from './err';
 import { getScriptOutput } from './exec';
-import { commandToScript } from './fs';
+import { writeFileWithCallback } from './fs';
 import { endGroup, getInput, setOutput, startGroup } from '@actions/core';
 
-async function run() {
+const run = async() => {
   startGroup('Starting to run command');
 
   const command = getInput('run', { required: true });
@@ -12,15 +12,20 @@ async function run() {
   const script = './run.sh';
 
   // Write command to script
-  commandToScript(command, script);
+  writeFileWithCallback(script, command);
 
   // Get the output of script
-  const output = await getScriptOutput('bash', script);
+  const shell = 'bash';
+  const output = await getScriptOutput(shell, script);
   setOutput('output', output);
+
   endGroup();
 
-  // Write command output to cache
-  await restoreOrSaveCache([script], output);
-}
+  // Use script as paths
+  const paths = [script];
 
-run().catch(err => handleErr(err));
+  // Set output hit based on whether the cache hits or not
+  setOutput('hit', await isCacheHit(paths, output));
+};
+
+run().catch(err => setErr(err));
