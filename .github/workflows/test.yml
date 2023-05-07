@@ -17,8 +17,7 @@ jobs:
         id: cache
         with:
           run: |
-            echo '2023c'
-            echo '2023c' >&2
+            echo 2023
       - name: Get outputs
         if: always()
         run: |

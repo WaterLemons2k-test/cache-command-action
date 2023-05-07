@@ -12,7 +12,6 @@ const getRestoreCache = async(paths: string[], key: string) => {
   const cacheKey = await restoreCache(paths, key);
 
   // Cache restored
-  debug(`cacheKey: ${cacheKey}`);
   console.log(`Cache restored from key: ${key}`);
   return cacheKey;
 };
@@ -28,7 +27,6 @@ const getSaveCache = async(paths: string[], key: string) => {
   const cacheId = await saveCache(paths, key);
 
   // Cache saved
-  debug(`cacheId: ${cacheId}`);
   console.log(`Cache saved with key: ${key}`);
   return cacheId;
 };
