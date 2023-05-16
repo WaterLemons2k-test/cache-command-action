@@ -1,4 +1,10 @@
-import { debug, setFailed, setOutput } from '@actions/core';
+import { setFailed, setOutput } from '@actions/core';
+
+// debug setting a debug message.
+// https://docs.github.com/actions/using-workflows/workflow-commands-for-github-actions#setting-a-debug-message
+export const debug = (message: string) => {
+  console.log(`::debug::${message}`);
+}
 
 // failed sets all outputs to false when catching err,
 // logs error and sets a failing exit code.

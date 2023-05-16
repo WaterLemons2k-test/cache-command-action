@@ -1,4 +1,4 @@
-import { debug } from '@actions/core';
+import { debug } from './log';
 import { getExecOutput } from '@actions/exec';
 
 // getScriptOutput get the script output and trim.

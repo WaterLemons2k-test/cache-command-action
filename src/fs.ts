@@ -1,6 +1,5 @@
-import { failed } from './log';
+import { failed, debug } from './log';
 import { writeFile as _writeFile } from 'fs';
-import { debug } from '@actions/core';
 
 // writeFile write data to file.
 export function writeFile(path: string, data: string) {

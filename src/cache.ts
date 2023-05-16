@@ -1,8 +1,9 @@
 import { restoreCache, saveCache } from '@actions/cache';
-import { debug } from '@actions/core';
+import { debug } from './log';
 
 // isCacheHit set hit to true if restore the cache,
 // otherwize set hit to false.
+// Set the param `paths` to a string in order to reuse other strings.
 export const isCacheHit = async (paths: string, key: string) => {
   debug(`Is cache hit:
   paths: ${paths}
