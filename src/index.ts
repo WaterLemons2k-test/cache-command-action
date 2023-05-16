@@ -19,7 +19,7 @@ const run = async () => {
   setOutput('output', output);
 
   // Set output hit based on whether the cache hits or not
-  setOutput('hit', await isCacheHit([script], output));
+  setOutput('hit', await isCacheHit(script, output));
 };
 
 run().catch(err => failed(err));
