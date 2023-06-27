@@ -16,7 +16,7 @@ jobs:
       - uses: ./
         id: cache
         with:
-          run: sh -c sudo apt-get install tzdata | grep '[(-]' | awk -F '[(-]' '{print $2}'
+          run: sh -c "sudo apt-get install tzdata | grep '[(-]' | awk -F '[(-]' '{print $2}'"
       - name: Get outputs
         if: always()
         run: |
