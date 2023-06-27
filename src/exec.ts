@@ -7,8 +7,12 @@ export const getCommandOutput = async (command: string) => {
   command: ${command}`);
 
   const { stdout } = await getExecOutput(command);
+
+  // Make sure the output has no white space.
   const output = stdout.trim();
   if (!output) throw new Error(`The stdout of ${command} is empty!`);
-  debug(`output: ${output}`);
+
+  // Ensure debug output to a new line.
+  debug(`\noutput: ${output}`);
   return output;
 };
