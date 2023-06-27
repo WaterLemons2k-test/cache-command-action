@@ -1,15 +1,14 @@
 import { debug } from './log';
 import { getExecOutput } from '@actions/exec';
 
-// getScriptOutput get the script output and trim.
-export const getScriptOutput = async (shell: string, script: string) => {
-  debug(`Starting to get script output:
-  shell: ${shell}
-  script: ${script}`);
+// getCommandOutput get the command output and trim.
+export const getCommandOutput = async (command: string) => {
+  debug(`Starting to get command output:
+  command: ${command}`);
 
-  const { stdout } = await getExecOutput(shell, [script], { silent: true });
+  const { stdout } = await getExecOutput(command, [], { silent: true });
   const output = stdout.trim();
-  if (!output) throw new Error(`The stdout of ${script} is empty!`);
+  if (!output) throw new Error(`The stdout of ${command} is empty!`);
   debug(`output: ${output}`);
   return output;
 };
