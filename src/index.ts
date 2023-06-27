@@ -11,7 +11,7 @@ const run = async () => {
   endGroup();
 
   // The default path used as the cache path
-  const path = './.cacheKey';
+  const path = '.cacheKey';
 
   // Set output hit based on whether the cache hits or not
   setOutput('hit', await isCacheHit(path, output));
