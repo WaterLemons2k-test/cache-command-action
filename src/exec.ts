@@ -1,5 +1,4 @@
-// import { debug } from './log';
-import { debug } from '@actions/core';
+import { debug } from './log';
 import { getExecOutput } from '@actions/exec';
 
 // getCommandOutput get the command output and trim.

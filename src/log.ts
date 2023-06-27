@@ -7,12 +7,22 @@ const replaceLF = (s: string) => {
 };
 
 /**
+ * Writing logs with a command
+ * https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions
+ * @param command Command of the message
+ * @param message The message that will replace Line feed
+ */
+const logCommand = (command: string, message = '') => {
+  console.log('::' + command + '::' + replaceLF(message));
+};
+
+/**
  * Writes debug message to user log
  * https://docs.github.com/actions/using-workflows/workflow-commands-for-github-actions#setting-a-debug-message
  * @param message debug message
  */
 export const debug = (message: string) => {
-  console.log(`::debug::${replaceLF(message)}`);
+  logCommand('debug', message);
 };
 
 /**
@@ -43,12 +53,12 @@ export const failed = (err: unknown) => {
  * @param name The name of the output group
  */
 export const startGroup = (name: string) => {
-  console.log(`::group::${replaceLF(name)}`);
+  logCommand('group', name);
 };
 
 /**
  * End an output group.
  */
 export const endGroup = () => {
-  console.log('::endgroup::');
+  logCommand('endgroup');
 };
