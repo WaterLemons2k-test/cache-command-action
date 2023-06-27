@@ -6,7 +6,7 @@ export const getCommandOutput = async (command: string) => {
   debug(`Starting to get command output:
   command: ${command}`);
 
-  const { stdout } = await getExecOutput(command, [], { silent: true });
+  const { stdout } = await getExecOutput(command);
   const output = stdout.trim();
   if (!output) throw new Error(`The stdout of ${command} is empty!`);
   debug(`output: ${output}`);
