@@ -2,5 +2,5 @@ coverage
 lib
 node_modules
 
-# Default script path to which JS writes the command
-run.sh
+# The default file used as the cache key
+.cacheKey

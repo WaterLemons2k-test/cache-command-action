@@ -12,7 +12,7 @@ const run = async () => {
   endGroup();
 
   // Create the file to be used as the cache key
-  const file = './run.sh';
+  const file = '.cacheKey';
   createFile(file);
 
   // Set output hit based on whether the cache hits or not
