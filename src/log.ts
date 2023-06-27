@@ -1,4 +1,5 @@
 import { setFailed, setOutput } from '@actions/core';
+import { commandOptions } from './interfaces';
 
 // replaceLF replace Line feed to an URL encoded character.
 // https://www.eso.org/~ndelmott/url_encode.html
@@ -11,18 +12,26 @@ const replaceLF = (s: string) => {
  * https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions
  * @param command Command of the message
  * @param message The message that will replace Line feed
+ * @param options optional command options. See commandOptions
  */
-const logCommand = (command: string, message = '') => {
-  console.log('::' + command + '::' + replaceLF(message));
+const logCommand = (command: string, message: string, options?: commandOptions) => {
+  command = '::' + command + '::';
+  if (options?.newLine) {
+    command = '\n' + command;
+  }
+
+  console.log(command + replaceLF(message));
 };
 
 /**
  * Writes debug message to user log
  * https://docs.github.com/actions/using-workflows/workflow-commands-for-github-actions#setting-a-debug-message
  * @param message debug message
+ * @param options optional command options. See commandOptions
  */
-export const debug = (message: string) => {
-  logCommand('debug', message);
+export const debug = (message: string, options?: commandOptions) => {
+
+  logCommand('debug', message, options);
 };
 
 /**
@@ -51,14 +60,16 @@ export const failed = (err: unknown) => {
  * Output until the next `groupEnd` will be foldable in this group
  *
  * @param name The name of the output group
+ * @param options optional command options. See commandOptions
  */
-export const startGroup = (name: string) => {
-  logCommand('group', name);
+export const startGroup = (name: string, options?: commandOptions) => {
+  logCommand('group', name, options);
 };
 
 /**
  * End an output group.
+ * @param options optional command options. See commandOptions
  */
-export const endGroup = () => {
-  logCommand('endgroup');
+export const endGroup = (options?: commandOptions) => {
+  logCommand('endgroup', '', options);
 };

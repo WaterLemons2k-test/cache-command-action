@@ -13,6 +13,6 @@ export const getCommandOutput = async (command: string) => {
   if (!output) throw new Error(`The stdout of ${command} is empty!`);
 
   // Ensure debug output to a new line.
-  debug(`\noutput: ${output}`);
+  debug(`output: ${output}`, { newLine: true });
   return output;
 };
