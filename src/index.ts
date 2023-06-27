@@ -1,26 +1,22 @@
 import { isCacheHit } from './cache';
-import { endGroup, failed, startGroup } from './log';
 import { getCommandOutput } from './exec';
-import { writeFile } from './fs';
+import { createFile } from './fs';
+import { endGroup, failed, startGroup } from './log';
 import { getInput, setOutput } from '@actions/core';
 
 const run = async () => {
-  const command = getInput('run', { required: true });
-
-  // Script path in which JS will write the command
-  const script = './run.sh';
-
-  // Write command to script
-  writeFile(script, command);
-
   startGroup('Starting to run command');
-  // Get the output of command
-  const output = await getCommandOutput(command);
+  // Get the output of the input run command
+  const output = await getCommandOutput(getInput('run', { required: true }));
   setOutput('output', output);
   endGroup();
 
+  // Create the file to be used as the cache key
+  const file = './run.sh';
+  createFile(file);
+
   // Set output hit based on whether the cache hits or not
-  setOutput('hit', await isCacheHit(script, output));
+  setOutput('hit', await isCacheHit(file, output));
 };
 
 run().catch(err => failed(err));

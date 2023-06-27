@@ -16,7 +16,7 @@ jobs:
       - uses: ./
         id: cache
         with:
-          run: sh -c "printf 20 && printf 23"
+          run: ''
       - name: Get outputs
         if: always()
         run: |

@@ -1,5 +1,5 @@
-import { restoreCache, saveCache } from '@actions/cache';
 import { debug } from './log';
+import { restoreCache, saveCache } from '@actions/cache';
 
 // isCacheHit set hit to true if restore the cache,
 // otherwize set hit to false.

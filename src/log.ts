@@ -1,5 +1,5 @@
-import { setFailed, setOutput } from '@actions/core';
 import { commandOptions } from './interfaces';
+import { setFailed, setOutput } from '@actions/core';
 
 // replaceLF replace Line feed to an URL encoded character.
 // https://www.eso.org/~ndelmott/url_encode.html
@@ -30,7 +30,6 @@ const logCommand = (command: string, message: string, options?: commandOptions) 
  * @param options optional command options. See commandOptions
  */
 export const debug = (message: string, options?: commandOptions) => {
-
   logCommand('debug', message, options);
 };
 
