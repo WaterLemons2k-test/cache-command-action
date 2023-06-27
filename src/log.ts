@@ -1,5 +1,5 @@
 import { commandOptions } from './interfaces';
-import { setFailed, setOutput } from '@actions/core';
+import { setOutput } from '@actions/core';
 
 // replaceLF replace Line feed to an URL encoded character.
 // https://www.eso.org/~ndelmott/url_encode.html
@@ -34,6 +34,15 @@ export const debug = (message: string, options?: commandOptions) => {
 };
 
 /**
+ * Adds an error message
+ * @param message error message
+ * @param options optional command options. See commandOptions
+ */
+export const error = (message: string, options?: commandOptions) => {
+  logCommand('error', message, options);
+};
+
+/**
  * Sets the action status to failed.
  * When the action exits it will be with an exit code of 1
  * @param err add error
@@ -43,14 +52,12 @@ export const failed = (err: unknown) => {
   // https://stackoverflow.com/a/70993058
   if (!(err instanceof Error)) throw err;
 
-  debug('Failed');
-
-  // Make sure outputs are empty or false.
+  // Make sure the outputs are empty or false.
   setOutput('output', '');
   setOutput('hit', false);
 
-  setFailed(err.message);
-  throw err;
+  process.exitCode = 1;
+  error(err.message);
 };
 
 /**
