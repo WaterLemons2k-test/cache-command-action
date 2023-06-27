@@ -1,6 +1,5 @@
 import { isCacheHit } from './cache';
 import { getCommandOutput } from './exec';
-import { createFile } from './fs';
 import { endGroup, failed, startGroup } from './log';
 import { getInput, setOutput } from '@actions/core';
 
@@ -11,12 +10,11 @@ const run = async () => {
   setOutput('output', output);
   endGroup();
 
-  // Create the file to be used as the cache key
-  const file = './.cacheKey';
-  createFile(file);
+  // The default path used as the cache path
+  const path = './.cacheKey';
 
   // Set output hit based on whether the cache hits or not
-  setOutput('hit', await isCacheHit(file, output));
+  setOutput('hit', await isCacheHit(path, output));
 };
 
 run().catch(err => failed(err));

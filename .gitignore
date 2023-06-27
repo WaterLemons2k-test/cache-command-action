@@ -2,6 +2,3 @@
 coverage
 lib
 node_modules
-
-# The default file used as the cache key
-.cacheKey
