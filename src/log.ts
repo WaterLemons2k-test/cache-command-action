@@ -15,7 +15,7 @@ const replaceLF = (s: string) => {
  * @param options optional command options. See commandOptions
  */
 const logCommand = (command: string, message: string, options?: commandOptions) => {
-  command = '::' + command + '::';
+  command = `::${command}::`;
   if (options?.newLine) {
     command = '\n' + command;
   }
@@ -48,13 +48,13 @@ export const error = (message: string, options?: commandOptions) => {
  * @param err add error
  */
 export const failed = (err: unknown) => {
-  // If err not an Error, throw it.
-  // https://stackoverflow.com/a/70993058
-  if (!(err instanceof Error)) throw err;
-
   // Make sure the outputs are empty or false.
   setOutput('output', '');
   setOutput('hit', false);
+
+  // If err not an Error, throw it.
+  // https://stackoverflow.com/a/70993058
+  if (!(err instanceof Error)) throw err;
 
   process.exitCode = 1;
   error(err.message);
