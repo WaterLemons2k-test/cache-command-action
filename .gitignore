@@ -2,3 +2,6 @@
 coverage
 lib
 node_modules
+
+# The default path used as the cache path
+.cachePath
