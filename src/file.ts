@@ -1,5 +1,5 @@
-import { debug, failed } from './log';
-import { appendFileSync, closeSync, openSync, unlink } from 'node:fs';
+import { debug } from './log';
+import { appendFileSync, closeSync, openSync, unlinkSync } from 'node:fs';
 import { EOL } from 'node:os';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -20,9 +20,7 @@ export const createFile = (file: string) => {
 export const deleteFile = (file: string) => {
   debug(`Starting to delete file:
   file: ${file}`);
-  unlink(file, (err) => {
-    if (err) failed(err);
-  });
+  unlinkSync(file);
 };
 
 /**

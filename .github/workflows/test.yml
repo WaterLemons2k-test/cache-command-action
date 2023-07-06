@@ -17,9 +17,7 @@ jobs:
         id: cache
         with:
           run: |
-            sh -c "echo 'true > /dev/null' > script.sh &&\
-            bash script.sh &&\
-            rm script.sh"
+            sh -c "echo '{\"foo\": 0}' | jq ."
       - name: Get outputs
         if: always()
         run: |
