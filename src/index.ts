@@ -1,12 +1,12 @@
-import { endGroup, failed, getInput, setOutput, startGroup } from './actions/actions';
-import { isCacheHit } from './actions/cache';
-import { getCommandOutput } from './actions/command';
+import { endGroup, error, getInput, setOutput, startGroup } from '@actions/core';
+import { isCacheHit } from './cache';
+import { getCommandOutput } from './command';
 import { createFile, deleteFile } from './file';
 
 const run = async () => {
   startGroup('Starting to run command');
   // Get the output of the input run command
-  const output = await getCommandOutput(getInput('run'));
+  const output = await getCommandOutput(getInput('run', { required: true }));
   setOutput('output', output);
   endGroup();
 
@@ -21,4 +21,15 @@ const run = async () => {
   deleteFile(path);
 };
 
-run().catch(err => failed(err));
+run().catch((err) => {
+  // Make sure the outputs are null or false.
+  setOutput('output', '');
+  setOutput('hit', false);
+
+  // If err not an Error, throw it.
+  // https://stackoverflow.com/a/70993058
+  if (!(err instanceof Error)) throw err;
+
+  process.exitCode = 1;
+  error(err.message);
+});
