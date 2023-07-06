@@ -4,8 +4,8 @@ import { getCommandOutput } from './command';
 import { createFile, deleteFile } from './file';
 
 const run = async () => {
-  startGroup('Starting to run command');
-  // Get the output of the input run command
+  startGroup('Getting command output');
+  // Getting the output of the input run command
   const output = await getCommandOutput(getInput('run', { required: true }));
   setOutput('output', output);
   endGroup();
