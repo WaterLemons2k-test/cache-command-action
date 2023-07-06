@@ -17,9 +17,9 @@ jobs:
         id: cache
         with:
           run: |
-            echo 'true > /dev/null' > script.sh
-            bash script.sh
-            rm script.sh
+            sh -c "echo 'true > /dev/null' > script.sh &&\
+            bash script.sh &&\
+            rm script.sh"
       - name: Get outputs
         if: always()
         run: |
