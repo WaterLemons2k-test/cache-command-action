@@ -17,7 +17,7 @@ jobs:
         id: cache
         with:
           run: |
-            printf ''
+            sh -c 'true > /dev/null'
       - name: Get outputs
         if: always()
         run: |
