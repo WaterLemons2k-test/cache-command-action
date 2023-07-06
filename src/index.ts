@@ -1,13 +1,12 @@
 import { isCacheHit } from './cache';
 import { getCommandOutput } from './command';
-import { createFile, deleteFile, setOutput } from './file';
+import { createFile, deleteFile, getInput, setOutput } from './file';
 import { endGroup, failed, startGroup } from './log';
-import { getInput } from '@actions/core';
 
 const run = async () => {
   startGroup('Starting to run command');
   // Get the output of the input run command
-  const output = await getCommandOutput(getInput('run', { required: true }));
+  const output = await getCommandOutput(getInput('run'));
   setOutput('output', output);
   endGroup();
 

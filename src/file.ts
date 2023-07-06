@@ -19,6 +19,18 @@ export const deleteFile = (file: string) => {
 };
 
 /**
+ * Gets the input of an input.
+ * Returns an empty string if the value is not defined.
+ * @param name name of the input to get
+ * @returns 
+ */
+export const getInput = (name: string): string => {
+  const value: string = process.env[`INPUT_${name.toLocaleUpperCase()}`] || '';
+
+  return value.trim();
+};
+
+/**
  * Sets the value of an output.
  * https://github.com/actions/toolkit/issues/1218#issuecomment-1288890856
  * @param key keys of the output to set
