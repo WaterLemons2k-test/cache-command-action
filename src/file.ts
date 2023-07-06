@@ -38,7 +38,9 @@ export const setOutput = (key: string, value: unknown) => {
 
   if (filePath) {
     debug(`Set output: ${key}=${value}`);
-    appendFileSync(filePath, `${key}=${value}${EOL}`);
+    appendFileSync(filePath, `${key}=${value}${EOL}`, {
+      encoding: 'utf8'
+    });
   }
 };
 
