@@ -1,5 +1,5 @@
+import { setOutput } from './file';
 import { commandOptions } from './interfaces';
-import { setOutput } from '@actions/core';
 
 // replaceLF replace Line feed to an URL encoded character.
 // https://www.eso.org/~ndelmott/url_encode.html

@@ -1,5 +1,6 @@
 import { debug, failed } from './log';
-import { closeSync, openSync, unlink } from 'node:fs';
+import { appendFileSync, closeSync, openSync, unlink } from 'node:fs';
+import { EOL } from 'node:os';
 
 /**
  * Create a empty file
@@ -21,4 +22,18 @@ export const deleteFile = (file: string) => {
   unlink(file, (err) => {
     if (err) failed(err);
   });
+};
+
+/**
+ * Sets the value of an output.
+ * https://github.com/actions/toolkit/issues/1218#issuecomment-1288890856
+ * @param key keys of the output to set
+ * @param value value to store.
+ */
+export const setOutput = (key: string, value: unknown) => {
+  const filePath = process.env['GITHUB_OUTPUT'] || '';
+
+  if (filePath) {
+    appendFileSync(filePath, `${key}=${value}${EOL}`);
+  }
 };
