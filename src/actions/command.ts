@@ -31,10 +31,9 @@ export const getCommandOutput = async (command: string) => {
  * Output will be streamed to the live console.
  * Returns promise with the exit code and collected stdout
  * @param command command to execute (can include additional args). Must be correctly escaped.
- * @param options optional exec listeners. See ExecListeners
  * @returns Promise<ExecOutput> exit code and stdout
  */
-const getExecOutput = async (command: string, options?: ExecListeners): Promise<ExecOutput> => {
+const getExecOutput = async (command: string): Promise<ExecOutput> => {
   let stdout = '';
 
   //Using string decoder covers the case where a mult-byte character is split
@@ -51,7 +50,7 @@ const getExecOutput = async (command: string, options?: ExecListeners): Promise<
   // flush any remaining characters
   stdout += stdoutDecoder.end();
 
-  const exitCode = await exec(command, [], { ...options, listeners });
+  const exitCode = await exec(command, [], { listeners });
   return {
     exitCode,
     stdout
