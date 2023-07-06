@@ -36,10 +36,21 @@ export const setOutput = (key: string, value: unknown) => {
 
   if (filePath) {
     debug(`Set output: ${prepareKeyValue(key, value)}`);
-    appendFileSync(filePath, prepareKeyValue(key, value), {
-      encoding: 'utf8'
-    });
+    fileCommand('OUTPUT', prepareKeyValue(key, value));
   }
+};
+
+const fileCommand = (command: string, message: unknown): void => {
+  const filePath = process.env[`GITHUB_${command}`];
+  if (!filePath) {
+    throw new Error(
+      `Unable to find environment variable for file command ${command}`
+    );
+  }
+
+  appendFileSync(filePath, `${toStringValue(message)}${EOL}`, {
+    encoding: 'utf8'
+  });
 };
 
 // https://github.com/actions/toolkit/blob/main/packages/core/src/file-command.ts#L27
