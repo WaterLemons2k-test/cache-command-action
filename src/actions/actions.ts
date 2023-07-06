@@ -1,23 +1,5 @@
-import { setOutput } from './file';
-
-// replaceLF replace Line feed to an URL encoded character.
-// https://www.eso.org/~ndelmott/url_encode.html
-const replaceLF = (s: string) => {
-  return s.replace(/\n/g, '%0A');
-};
-
-/**
- * Writing logs with a command
- * https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions
- * @param command Command of the message
- * @param message The message that will replace Line feed
- * @param options optional command options. See commandOptions
- */
-const logCommand = (command: string, message: string) => {
-  command = `::${command}::`;
-
-  console.log(command + replaceLF(message));
-};
+import { fileCommand, prepareKeyValue } from './file-command';
+import { logCommand } from './log-command';
 
 /**
  * Writes debug message to user log
@@ -74,4 +56,30 @@ export const startGroup = (name: string) => {
  */
 export const endGroup = () => {
   logCommand('endgroup', '');
+};
+
+/**
+ * Gets the input of an input.
+ * Returns an empty string if the value is not defined.
+ * @param name name of the input to get
+ * @returns 
+ */
+export const getInput = (name: string): string => {
+  const value: string = process.env[`INPUT_${name.toLocaleUpperCase()}`] || '';
+
+  return value.trim();
+};
+
+/**
+ * Sets the value of an output.
+ * https://github.com/actions/toolkit/issues/1218#issuecomment-1288890856
+ * @param key keys of the output to set
+ * @param value value to store. Non-string values will be converted to a string via JSON.stringify
+ */
+export const setOutput = (key: string, value: unknown) => {
+  const filePath = process.env['GITHUB_OUTPUT'] || '';
+
+  if (filePath) {
+    fileCommand('OUTPUT', prepareKeyValue(key, value));
+  }
 };

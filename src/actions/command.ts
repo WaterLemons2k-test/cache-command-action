@@ -1,6 +1,6 @@
-import { debug } from './log';
-import { getExecOutput } from '@actions/exec';
+import { debug } from './actions';
 import { EOL } from 'node:os';
+import { getExecOutput } from '@actions/exec';
 
 // getCommandOutput get the command output and trim.
 export const getCommandOutput = async (command: string) => {
