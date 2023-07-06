@@ -16,7 +16,8 @@ jobs:
       - uses: ./
         id: cache
         with:
-          run: sh -c "echo '{\"foo\": 0}' | jq ."
+          run: |
+            sh -c "echo '{\"foo\": 0}' | jq ."
       - name: Get outputs
         if: always()
         run: |
