@@ -1,4 +1,3 @@
-import { debug } from './log';
 import { appendFileSync, closeSync, openSync, unlinkSync } from 'node:fs';
 import { EOL } from 'node:os';
 import { v4 as uuidv4 } from 'uuid';
@@ -29,7 +28,6 @@ export const setOutput = (key: string, value: unknown) => {
   const filePath = process.env['GITHUB_OUTPUT'] || '';
 
   if (filePath) {
-    debug(`Set output: ${prepareKeyValue(key, value)}`);
     fileCommand('OUTPUT', prepareKeyValue(key, value));
   }
 };
