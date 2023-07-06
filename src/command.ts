@@ -4,9 +4,6 @@ import { EOL } from 'node:os';
 
 // getCommandOutput get the command output and trim.
 export const getCommandOutput = async (command: string) => {
-  debug(`Starting to get command output:
-  command: ${command}`);
-
   const { stdout } = await getExecOutput(command);
 
   // Make sure the output has no white space.

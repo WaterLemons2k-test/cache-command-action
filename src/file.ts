@@ -8,8 +8,6 @@ import { v4 as uuidv4 } from 'uuid';
  * @param file File to be created
  */
 export const createFile = (file: string) => {
-  debug(`Starting to create file:
-  file: ${file}`);
   closeSync(openSync(file, 'w'));
 };
 
@@ -18,8 +16,6 @@ export const createFile = (file: string) => {
  * @param file File to be deleted
  */
 export const deleteFile = (file: string) => {
-  debug(`Starting to delete file:
-  file: ${file}`);
   unlinkSync(file);
 };
 
@@ -91,6 +87,5 @@ const toStringValue = (value: unknown): string => {
     return value as string;
   }
 
-  debug(`Converted value: ${value} to a string via JSON.stringify.`);
   return JSON.stringify(value);
 };
