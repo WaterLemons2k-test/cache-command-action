@@ -17,10 +17,9 @@ jobs:
         id: cache
         with:
           run: |
-            sh -c "echo '{\"foo\": 0}' | jq ."
+            printf ''
       - name: Get outputs
         if: always()
         run: |
-          ls -a /home/runner/work/cache-command-action/cache-command-action
           echo "output: ${{ steps.cache.outputs.output }}"
           echo "hit: ${{ steps.cache.outputs.hit }}"
