@@ -1,5 +1,4 @@
 import { setOutput } from './file';
-import { commandOptions } from './interfaces';
 
 // replaceLF replace Line feed to an URL encoded character.
 // https://www.eso.org/~ndelmott/url_encode.html
@@ -14,11 +13,8 @@ const replaceLF = (s: string) => {
  * @param message The message that will replace Line feed
  * @param options optional command options. See commandOptions
  */
-const logCommand = (command: string, message: string, options?: commandOptions) => {
+const logCommand = (command: string, message: string) => {
   command = `::${command}::`;
-  if (options?.newLine) {
-    command = '\n' + command;
-  }
 
   console.log(command + replaceLF(message));
 };
@@ -29,8 +25,8 @@ const logCommand = (command: string, message: string, options?: commandOptions) 
  * @param message debug message
  * @param options optional command options. See commandOptions
  */
-export const debug = (message: string, options?: commandOptions) => {
-  logCommand('debug', message, options);
+export const debug = (message: string) => {
+  logCommand('debug', message);
 };
 
 /**
@@ -38,8 +34,8 @@ export const debug = (message: string, options?: commandOptions) => {
  * @param message error message
  * @param options optional command options. See commandOptions
  */
-export const error = (message: string, options?: commandOptions) => {
-  logCommand('error', message, options);
+export const error = (message: string) => {
+  logCommand('error', message);
 };
 
 /**
@@ -68,14 +64,14 @@ export const failed = (err: unknown) => {
  * @param name The name of the output group
  * @param options optional command options. See commandOptions
  */
-export const startGroup = (name: string, options?: commandOptions) => {
-  logCommand('group', name, options);
+export const startGroup = (name: string) => {
+  logCommand('group', name);
 };
 
 /**
  * End an output group.
  * @param options optional command options. See commandOptions
  */
-export const endGroup = (options?: commandOptions) => {
-  logCommand('endgroup', '', options);
+export const endGroup = () => {
+  logCommand('endgroup', '');
 };

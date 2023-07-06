@@ -1,5 +1,6 @@
 import { debug } from './log';
 import { getExecOutput } from '@actions/exec';
+import { EOL } from 'node:os';
 
 // getCommandOutput get the command output and trim.
 export const getCommandOutput = async (command: string) => {
@@ -13,6 +14,7 @@ export const getCommandOutput = async (command: string) => {
   if (!output) throw new Error(`The stdout of ${command} is empty!`);
 
   // Ensure debug output to a new line.
-  debug(`output: ${output}`, { newLine: true });
+  process.stdout.write(EOL);
+  debug(`output: ${output}`);
   return output;
 };
