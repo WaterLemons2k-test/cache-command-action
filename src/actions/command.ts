@@ -40,13 +40,8 @@ const getExecOutput = async (command: string, options?: ExecListeners): Promise<
   //Using string decoder covers the case where a mult-byte character is split
   const stdoutDecoder = new StringDecoder('utf8');
 
-  const originalStdoutListener = options?.stdout;
-
   const stdOutListener = (data: Buffer): void => {
     stdout += stdoutDecoder.write(data);
-    if (originalStdoutListener) {
-      originalStdoutListener(data);
-    }
   };
 
   const listeners: ExecListeners = {
