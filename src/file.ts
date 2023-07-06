@@ -33,8 +33,12 @@ export const deleteFile = (file: string) => {
 export const setOutput = (key: string, value: unknown) => {
   const filePath = process.env['GITHUB_OUTPUT'] || '';
 
+  // Converted value to a string.
+  value = toStringValue(value);
+
   if (filePath) {
-    appendFileSync(filePath, `${key}=${toStringValue(value)}${EOL}`);
+    debug(`Set output: ${key}=${value}`);
+    appendFileSync(filePath, `${key}=${value}${EOL}`);
   }
 };
 
@@ -52,5 +56,6 @@ const toStringValue = (value: unknown): string => {
     return value as string;
   }
 
+  debug(`Converted value: ${value} to a string via JSON.stringify.`);
   return JSON.stringify(value);
 };
