@@ -1,10 +1,10 @@
 import { restoreCache, saveCache } from '@actions/cache';
 
-// isCacheHit set hit to true if restore the cache,
+// isCacheHit set hit to true if found the cache,
 // otherwize set hit to false.
 // Set the param `paths` to a string in order to reuse other strings.
 export const isCacheHit = async (paths: string, key: string) => {
-  const cacheKey = await restoreCache([paths], key);
+  const cacheKey = await restoreCache([paths], key, [], { lookupOnly: true });
 
   if (!cacheKey) {
     const cacheId = await saveCache([paths], key);
@@ -15,6 +15,6 @@ export const isCacheHit = async (paths: string, key: string) => {
     return false;
   }
 
-  console.log(`Cache restored from key: ${key}`);
+  console.log(`Cache found from key: ${key}`);
   return true;
 };

@@ -1,6 +1,6 @@
 import { endGroup, error, getInput, setOutput, startGroup } from '@actions/core';
-import { isCacheHit } from './cache';
-import { getCommandOutput } from './command';
+import { isCacheHit } from './actions/cache';
+import { getCommandOutput } from './actions/command';
 import { createFile, deleteFile } from './file';
 
 const run = async () => {
