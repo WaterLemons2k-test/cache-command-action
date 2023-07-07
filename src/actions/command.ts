@@ -1,3 +1,4 @@
+import { endGroup, startGroup } from '@actions/core';
 import { getExecOutput } from '@actions/exec';
 
 /**
@@ -9,6 +10,7 @@ import { getExecOutput } from '@actions/exec';
  * @returns Promise<string> stdout
  */
 export const getCommandOutput = async (command: string): Promise<string> => {
+  startGroup('Getting command output');
   const { stdout } = await getExecOutput(command);
 
   // Make sure the output has no white space.
@@ -16,5 +18,7 @@ export const getCommandOutput = async (command: string): Promise<string> => {
   if (output.length === 0) {
     throw new Error(`The stdout of ${command} cannot be null or empty!`);
   }
+
+  endGroup();
   return output;
 };
