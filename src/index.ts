@@ -8,7 +8,7 @@ const run = async () => {
   setOutput('output', output);
 
   // Cache file used as a placeholder
-  const file = '.cacheFile';
+  const file = '.cache';
 
   // Set the output hit depending on whether the cache is found or not
   setOutput('hit', await isCacheFound(file, output));
