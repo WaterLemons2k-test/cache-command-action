@@ -16,7 +16,7 @@ jobs:
       - uses: ./
         id: cache
         with:
-          run: echo 0
+          run: echo
       - name: Get outputs
         if: always()
         run: |
