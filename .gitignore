@@ -4,4 +4,4 @@ lib
 node_modules
 
 # Default file used as the cache file
-.cache
+.cache-command-action-file
