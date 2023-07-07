@@ -14,4 +14,8 @@ const run = async () => {
   setOutput('hit', await isCacheFound(file, output));
 };
 
-run().catch(err => setFailed(err.message));
+run().catch((err) => {
+  // Ensure output hit is false
+  setOutput('hit', false);
+  setFailed(err.message);
+});
